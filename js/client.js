@@ -55,7 +55,7 @@ class Client {
   }
 
   newQuestion(data) {
-    document.getElementById("problem-text").innerHTML = JSON.stringify(data)
+    document.getElementById("problem-html").innerHTML = data.problem
   }
 
   render(data) {
