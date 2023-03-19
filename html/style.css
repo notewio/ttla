@@ -6,4 +6,6 @@ body {
   justify-content: center;
   align-items: center;
   font-family: sans-serif;
+  padding: 10vw;
+  box-sizing: border-box;
 }

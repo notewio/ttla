@@ -7,6 +7,7 @@ class Client {
       query: { name: this.username },
       reconnection: false, // TODO: dev only
     })
+    document.getElementById("player-name").innerHTML = this.username
 
     this.socket.on("on-connected", this.onConnected.bind(this))
     this.socket.on("new-player", this.newPlayer.bind(this))
