@@ -108,7 +108,7 @@ export class GameServer {
 
     if (Math.abs(this.center) > WIN_DIST) {
       clearInterval(this.updateInterval)
-      this.socket.emit("game-end", Math.sign(this.center))
+      this.socket.emit("game-end", { sign: Math.sign(this.center) })
     }
 
   }

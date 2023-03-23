@@ -13,6 +13,7 @@ class Client {
     this.socket.on("new-player", this.newPlayer.bind(this))
     this.socket.on("new-question", this.newQuestion.bind(this))
     this.socket.on("center", this.render.bind(this))
+    this.socket.on("game-end", this.gameEnd.bind(this))
 
     this.playerArea = document.getElementById("playerArea")
 
@@ -61,6 +62,10 @@ class Client {
 
   render(data) {
     document.getElementById("tractors").setAttribute("transform", `translate(${data}, 0)`)
+  }
+
+  gameEnd(data) {
+    window.alert("WINNER: " + data.sign > 0 ? "RED" : "BLUE")
   }
 
 }
