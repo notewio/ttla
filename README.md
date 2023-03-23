@@ -6,3 +6,5 @@ linear games
 hosts on `localhost:1151`
 
 `localhost:1151/start` to start game
+
+svg graphics from arcademics
