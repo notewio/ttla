@@ -1,7 +1,7 @@
 import katex from "katex"
 
 const WIN_WIDTH = 40
-const WIN_DIST = 500
+const WIN_DIST = 800
 
 
 class Player {
@@ -77,18 +77,45 @@ export class GameServer {
   }
 
   generateProblem(correct_index) {
-    let a = [0, 0, 0, 0].map(_ => Math.round(Math.random() * 12 + 1))
-    let b = [0, 0].map(_ => Math.round(Math.random() * 12 + 1))
+    let num_zeros = Math.floor(Math.random() * 2) + 1
+    let numbers = Array.from({ length: 9 }, () => Math.floor(Math.random() * 9) + 1);
+    for (let i = 0; i < num_zeros; i++) {
+      numbers[Math.floor(Math.random() * numbers.length)] = 0
+    }
 
-    return katex.renderToString(`\\begin{cases}
-      ${a[0]}x_1 + ${a[1]}x_2 = ${b[0]} \\\\
-      ${a[2]}x_1 + ${a[3]}x_2 = ${b[1]}
-    \\end{cases}
-    \\\\
-    \\fbox{\\text{1. $(1, 2)$}}
-    \\fbox{\\text{2. $(1, 2)$}}
-    \\fbox{\\text{3. $(1, 2)$}}
-    \\fbox{\\text{4. $(1, 2)$}}
+    numbers = [
+      numbers.slice(0, 3),
+      numbers.slice(3, 6),
+      numbers.slice(6, 9),
+    ]
+
+    const determinant = m =>
+      m.length == 1 ?
+        m[0][0] :
+        m.length == 2 ?
+          m[0][0] * m[1][1] - m[0][1] * m[1][0] :
+          m[0].reduce((r, e, i) =>
+            r + (-1) ** (i + 2) * e * determinant(m.slice(1).map(c =>
+              c.filter((_, j) => i != j))), 0)
+
+    let answers = Array.from({ length: 4 }, () => Math.floor(Math.random() * 500))
+    answers[correct_index] = determinant(numbers)
+
+    return katex.renderToString(`
+      \\begin{array}{l l}
+        \\begin{vmatrix}
+          ${numbers[0].join(" & ")} \\\\
+          ${numbers[1].join(" & ")} \\\\
+          ${numbers[2].join(" & ")} \\\\
+        \\end{vmatrix}
+      &
+        \\begin{array}{l l}
+          \\fbox{1. ${answers[0]}} &
+          \\fbox{2. ${answers[1]}} \\\\
+          \\fbox{3. ${answers[2]}} &
+          \\fbox{4. ${answers[3]}}
+        \\end{array}
+      \\end{array}
     `)
   }
 
