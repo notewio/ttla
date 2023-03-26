@@ -54,4 +54,9 @@ io.on("connection", client => {
 
   console.log(`socket\t:: connected ${name} (${id.split("-")[0]})`)
 
+  client.on("disconnect", () => {
+    game.removePlayer(id)
+    console.log(`socket\t:: disconnected ${name} (${id.split("-")[0]})`)
+  })
+
 })

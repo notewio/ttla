@@ -57,6 +57,11 @@ export class GameServer {
 
   }
 
+  removePlayer(id) {
+    delete this.players[id]
+    this.socket.emit("del-player", { id: id })
+  }
+
   start() {
 
     for (const [id, player] of Object.entries(this.players)) {
@@ -148,7 +153,7 @@ export class GameServer {
     for (const [id, player] of Object.entries(this.players)) {
       let power = player.power
       if (player.team === 0) { power = -power }
-      this.center += power
+      this.center += power * (Math.random() / 10 + 1)
 
       player.cooldown -= 1
       player.cooldown = Math.max(player.cooldown, 0)

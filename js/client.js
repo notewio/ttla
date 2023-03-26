@@ -11,6 +11,7 @@ class Client {
 
     this.socket.on("on-connected", this.onConnected.bind(this))
     this.socket.on("new-player", this.newPlayer.bind(this))
+    this.socket.on("del-player", this.delPlayer.bind(this))
     this.socket.on("new-question", this.newQuestion.bind(this))
     this.socket.on("center", this.render.bind(this))
     this.socket.on("game-end", this.gameEnd.bind(this))
@@ -51,9 +52,24 @@ class Client {
       const element = tractors[i];
       if (element.innerHTML.length > 0) { continue }
       element.innerHTML = data.name
+      element.setAttribute("data-id", data.id)
       return
     }
 
+  }
+
+  delPlayer(data) {
+
+    let tractors = [...document.getElementsByClassName(data.team === 0 ? "tractor-name-red" : "tractor-name-blue")]
+
+    for (let i = 0; i < tractors.length; i++) {
+      const element = tractors[i];
+      if (element.getAttribute("data-id") === data.id) {
+        element.setAttribute("data-id", "")
+        element.innerHTML = ""
+        return
+      }
+    }
   }
 
   newQuestion(data) {
